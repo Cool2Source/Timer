@@ -1,96 +1,404 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workout Timer - Ultimate Interval Training App</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background-color: #f4f7f9;
-        }
-        .container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
-        h1 { color: #007AFF; font-size: 2.5em; margin-bottom: 10px; }
-        .tagline { font-size: 1.2em; color: #666; margin-bottom: 30px; }
-        h2 { color: #333; border-bottom: 2px solid #007AFF; display: inline-block; padding-bottom: 5px; margin-top: 30px; }
-        
-        /* Style des boutons Stores */
-        .store-buttons {
-            margin: 30px 0;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .btn-store {
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-        .btn-store:hover { transform: scale(1.05); }
-        .apple { background-color: #000; }
-        .google { background-color: #34a853; }
-        .icon { margin-right: 10px; font-size: 1.2em; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timer — Tabata &amp; HIIT interval timer</title>
+<meta name="description" content="Timer is a free Tabata and HIIT interval timer for iPhone and Android: simple or custom workouts, sessions, time or reps, beeps over your music, history. No account.">
+<meta name="apple-itunes-app" content="app-id=6761732194">
+<link rel="icon" type="image/png" href="images/icon-192.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cool2source.github.io/Timer/">
+<meta property="og:title" content="Timer — Tabata &amp; HIIT interval timer">
+<meta property="og:description" content="Free interval timer for iPhone and Android. Simple or custom workouts, sessions, beeps over your music. No account.">
+<meta property="og:image" content="https://cool2source.github.io/Timer/images/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5faf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a1211" media="(prefers-color-scheme: dark)">
+<style>
+  :root {
+    --bg: #f5faf9; --band: #e9f4f2; --card: #ffffff; --text: #0f1f1d; --muted: #4c6763;
+    --accent: #00796b; --accent-2: #0d9488; --glow: rgba(20, 184, 166, .28);
+    --border: rgba(10, 40, 35, .10); --btn-bg: #0f1f1d; --btn-text: #ffffff;
+    --shadow: 0 30px 60px -28px rgba(0, 60, 50, .45);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a1211; --band: #0e1b19; --card: #12201e; --text: #e8f4f2; --muted: #9db6b1;
+      --accent: #4fd1c0; --accent-2: #2dd4bf; --glow: rgba(45, 212, 191, .20);
+      --border: rgba(255, 255, 255, .08); --btn-bg: #ffffff; --btn-text: #0a1211;
+      --shadow: 0 30px 70px -28px rgba(0, 0, 0, .85);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  img { max-width: 100%; }
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; border-radius: 8px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
 
-        .feature-list { list-style: none; padding: 0; }
-        .feature-list li { margin-bottom: 15px; padding-left: 30px; position: relative; }
-        .feature-list li::before { content: "✅"; position: absolute; left: 0; }
-        
-        .footer-links { margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; }
-        .footer-links a { color: #007AFF; text-decoration: none; font-weight: bold; margin: 0 15px; }
-        .footer-links a:hover { text-decoration: underline; }
-    </style>
+  /* En-tête */
+  .top { position: sticky; top: 0; z-index: 10; backdrop-filter: saturate(160%) blur(12px); -webkit-backdrop-filter: saturate(160%) blur(12px); background: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom: 1px solid var(--border); }
+  .top-in { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 800; font-size: 1.15rem; letter-spacing: -.01em; }
+  .brand img { width: 36px; height: 36px; border-radius: 9px; box-shadow: 0 0 0 1px var(--border); }
+  .langs { display: flex; gap: 6px; }
+  .langs a { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); color: var(--text); text-decoration: none; font-size: .9rem; font-weight: 600; }
+  .langs a[aria-current="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+  /* Accroche */
+  .hero { position: relative; overflow: hidden; padding: 56px 0 80px; }
+  .hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(620px 420px at 82% 18%, var(--glow), transparent 70%), radial-gradient(520px 380px at 6% 92%, var(--glow), transparent 70%); }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.08fr .92fr; gap: 40px; align-items: center; }
+  .eyebrow { display: inline-block; margin: 0 0 14px; color: var(--accent); font-weight: 700; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+  h1 { margin: 0 0 18px; font-size: clamp(2.4rem, 5.2vw, 3.8rem); line-height: 1.04; letter-spacing: -.03em; font-weight: 800; text-wrap: balance; }
+  .grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { margin: 0 0 28px; font-size: 1.2rem; color: var(--muted); max-width: 36ch; }
+  .stores { display: flex; flex-wrap: wrap; gap: 12px; }
+  .store { display: inline-flex; flex-direction: column; justify-content: center; min-width: 176px; padding: 9px 20px 10px; border-radius: 14px; background: var(--btn-bg); color: var(--btn-text); text-decoration: none; line-height: 1.15; transition: transform .15s ease, box-shadow .15s ease; box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .6); }
+  .store small { font-size: .72rem; opacity: .8; }
+  .store strong { font-size: 1.2rem; letter-spacing: -.01em; }
+  .store:hover { transform: translateY(-2px); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; list-style: none; }
+  .chips li { padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); font-weight: 650; font-size: .88rem; }
+
+  /* Téléphones */
+  .phone { width: 250px; border-radius: 40px; padding: 9px; background: #0c0d0d; box-shadow: var(--shadow), inset 0 0 0 2px #2b2d2d; }
+  .phone img { display: block; width: 100%; height: auto; border-radius: 32px; }
+  .phones { position: relative; height: 560px; }
+  .phones .phone { position: absolute; }
+  .phones .back { left: 4%; top: 46px; transform: rotate(-7deg); }
+  .phones .front { right: 4%; top: 0; transform: rotate(5deg); }
+
+  /* Sections */
+  section h2 { margin: 0 0 10px; text-wrap: balance; text-align: center; font-size: clamp(1.8rem, 3.6vw, 2.6rem); line-height: 1.15; letter-spacing: -.02em; font-weight: 800; }
+  .sub { margin: 0 auto 40px; text-align: center; color: var(--muted); font-size: 1.1rem; max-width: 46ch; }
+  .features { padding: 80px 0; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: 26px; }
+  .icon { width: 50px; height: 50px; border-radius: 15px; display: grid; place-items: center; margin-bottom: 16px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+  .icon svg { width: 26px; height: 26px; }
+  .card h3 { margin: 0 0 6px; font-size: 1.12rem; letter-spacing: -.01em; }
+  .card p { margin: 0; color: var(--muted); font-size: 1rem; }
+
+  .screens { padding: 80px 0; background: var(--band); }
+  .shots { display: flex; gap: 36px; justify-content: center; }
+  .shot { margin: 0; width: 250px; flex: none; text-align: center; }
+  .shot figcaption { margin-top: 16px; font-weight: 650; }
+
+  .values { padding: 80px 0 40px; }
+  .cta { padding: 40px 0 88px; }
+  .cta-box { text-align: center; padding: 56px 24px; border-radius: 28px; color: #ffffff; background: radial-gradient(500px 300px at 15% 10%, rgba(255, 255, 255, .16), transparent 70%), linear-gradient(135deg, #00796b, #0d9488 55%, #14b8a6); box-shadow: var(--shadow); }
+  .cta-box h2 { color: #ffffff; }
+  .cta-box p { margin: 0 0 26px; font-size: 1.15rem; opacity: .92; }
+  .cta-box .stores { justify-content: center; }
+  .cta-box .store { background: #ffffff; color: #0a1211; }
+
+  footer { border-top: 1px solid var(--border); padding: 28px 0 40px; color: var(--muted); font-size: .95rem; }
+  .foot { display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: space-between; align-items: center; }
+  .foot nav { display: flex; flex-wrap: wrap; gap: 18px; }
+  .foot a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .foot a:hover { color: var(--accent); }
+
+  .js .page[hidden] { display: none; }
+
+  @media (max-width: 900px) {
+    .hero { padding: 36px 0 56px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+    .lead { margin-left: auto; margin-right: auto; }
+    .stores, .chips { justify-content: center; }
+    .phones { height: 470px; max-width: 420px; margin: 0 auto; width: 100%; }
+    .phone { width: 210px; border-radius: 34px; padding: 8px; }
+    .phone img { border-radius: 27px; }
+    .grid { grid-template-columns: 1fr 1fr; }
+    .shots { justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -20px; padding: 4px 20px 18px; }
+    .shot { width: 230px; scroll-snap-align: center; }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .phones { height: 400px; }
+    .phone { width: 178px; border-radius: 30px; padding: 7px; }
+    .phone img { border-radius: 24px; }
+    .phones .back { left: 2%; }
+    .phones .front { right: 2%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .store { transition: none; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Workout Timer 🏆</h1>
-        <p class="tagline">The ultimate companion for HIIT, Tabata, and Strength training.</p>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="./"><img src="images/icon-192.png" alt="" width="36" height="36">Timer</a>
+    <nav class="langs" aria-label="Language / Langue">
+      <a href="#en" lang="en" hreflang="en">EN</a>
+      <a href="#fr" lang="fr" hreflang="fr">FR</a>
+    </nav>
+  </div>
+</header>
 
-        <div class="store-buttons">
-            <a href="https://apps.apple.com/us/app/timer-tabata-hiit/id6761732194" class="btn-store apple" target="_blank">
-                <span class="icon">🍎</span> App Store
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.hda.timer" class="btn-store google" target="_blank">
-                <span class="icon">🤖</span> Google Play
-            </a>
+<!-- ===================== ENGLISH ===================== -->
+<div class="page" id="en" lang="en">
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Interval timer · Tabata · HIIT</p>
+        <h1>You train.<br><span class="grad">Timer keeps time.</span></h1>
+        <p class="lead">Tabata, HIIT, strength: set up your intervals in seconds, chain them into sessions, and let the beeps pace your workout, right over your music.</p>
+        <div class="stores">
+          <a class="store" href="https://apps.apple.com/app/timer-tabata-hiit/id6761732194"><small>Download on the</small><strong>App Store</strong></a>
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.hda.timer&amp;hl=en"><small>Get it on</small><strong>Google Play</strong></a>
         </div>
-
-        <p>🔥 Take your training to the next level. Whether you're training at home 🏠, at the gym 🏋️, or outdoors 🌳, this app is designed to be simple, fast, and fully customizable.</p>
-
-        <h2>⚡ KEY FEATURES</h2>
-        <ul class="feature-list">
-            <li><strong>Fully Customizable Intervals</strong> — Set your Warm-up, Work, Rest, and Cool-down times exactly how you want them.</li>
-            <li><strong>Smart Sessions</strong> — Group your favorite workouts into complete training sessions.</li>
-            <li><strong>History & Tracking</strong> — Keep a detailed log of your progress and personal notes.</li>
-            <li><strong>Import / Export</strong> — Easily share your workouts or back up your data using JSON.</li>
-        </ul>
-
-        <h2>🎨 PERSONALIZE</h2>
-        <ul class="feature-list">
-            <li><strong>Audio & Visual Cues</strong> — Stay focused with sound alerts and vibrations.</li>
-            <li><strong>Themes & Colors</strong> — Light and Dark modes with customizable accent colors.</li>
-            <li><strong>No Account Needed</strong> — Just open the app and focus on your sweat! 💪</li>
-        </ul>
-
-        <div class="footer-links">
-            <a href="support.html">Support</a>
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="terms.html">Terms of Use</a>
-        </div>
+        <ul class="chips"><li>Free</li><li>No account</li><li>13 languages</li></ul>
+      </div>
+      <div class="phones">
+        <div class="phone back"><img src="images/en-accueil.jpg" width="720" height="1560" alt="Home screen of Timer: a session and four workouts, each with its total time." loading="lazy"></div>
+        <div class="phone front"><img src="images/en-lecteur.jpg" width="720" height="1560" alt="Timer's player in dark mode: 27 seconds left on the second effort, with the next steps below." loading="lazy"></div>
+      </div>
     </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <h2>Everything you need, nothing you don't</h2>
+      <p class="sub">Built for training, not for filling in forms.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M4 12h16M4 18h7"/><circle cx="17" cy="6" r="2"/><circle cx="14" cy="18" r="2"/></svg></div>
+          <h3>Simple or custom</h3>
+          <p>Set warm-up, work, rest, cycles and sets in a couple of taps. Or build your own list, step by step, set by set.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9.5 2h5"/></svg></div>
+          <h3>Time or reps</h3>
+          <p>40 seconds of burpees or 15 push-ups: an effort in reps waits until you're done, and one tap moves you on.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="5" rx="1.5"/><rect x="3" y="11" width="18" height="5" rx="1.5"/><path d="M8 20h8"/></svg></div>
+          <h3>Full sessions</h3>
+          <p>Chain several workouts (warm-up, HIIT, core) and play them all in one go.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></div>
+          <h3>Made for the effort</h3>
+          <p>Big digits you can read from afar, beeps and vibrations at 3-2-1, and the screen stays on. The beeps play over your music, and the timer stays right even if your phone locks.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div>
+          <h3>Your history</h3>
+          <p>Every finished workout is kept, with the time you actually played and your notes. Watch yourself progress.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></div>
+          <h3>Share and back up</h3>
+          <p>Send a workout to a friend or your coach, back everything up to a file, and bring it to a new phone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screens">
+    <div class="wrap">
+      <h2>See it in action</h2>
+      <p class="sub">Clear screens, made to be read at a glance.</p>
+      <div class="shots">
+        <figure class="shot"><div class="phone"><img src="images/en-accueil.jpg" width="720" height="1560" alt="Home screen: a session and four workouts with their total time." loading="lazy"></div><figcaption>Your workouts at a glance</figcaption></figure>
+        <figure class="shot"><div class="phone"><img src="images/en-lecteur.jpg" width="720" height="1560" alt="The player: a big countdown, the current step highlighted, and a pause button." loading="lazy"></div><figcaption>A player you can read mid-effort</figcaption></figure>
+        <figure class="shot"><div class="phone"><img src="images/en-historique.jpg" width="720" height="1560" alt="History: three finished workouts, the first one opened with its details and a note." loading="lazy"></div><figcaption>Your history, with your notes</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="values">
+    <div class="wrap grid">
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+        <h3>Your data stays with you</h3>
+        <p>No account, no server: your workouts stay on your phone. <a href="privacy-policy.html#en">Privacy policy</a></p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H8a2.5 2.5 0 1 1 0-5c3 0 4 5 4 5zM12 7h4a2.5 2.5 0 1 0 0-5c-3 0-4 5-4 5z"/></svg></div>
+        <h3>Free</h3>
+        <p>The app is funded by ads. Where the law requires it, you are asked for your consent first.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+        <h3>For everyone</h3>
+        <p>13 languages, dark mode, six colours to choose from, and labels read aloud by VoiceOver and TalkBack.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Ready for your next workout?</h2>
+        <p>Get Timer for free.</p>
+        <div class="stores">
+          <a class="store" href="https://apps.apple.com/app/timer-tabata-hiit/id6761732194"><small>Download on the</small><strong>App Store</strong></a>
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.hda.timer&amp;hl=en"><small>Get it on</small><strong>Google Play</strong></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap foot">
+    <nav aria-label="Legal"><a href="support.html#en">Support</a><a href="privacy-policy.html#en">Privacy policy</a><a href="terms.html#en">Terms of use</a></nav>
+    <span>© 2026 Cool2Source, France</span>
+  </div>
+</footer>
+</div>
+
+<!-- ===================== FRANÇAIS ===================== -->
+<div class="page" id="fr" lang="fr">
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Minuteur d'intervalles · Tabata · HIIT</p>
+        <h1>Vous vous entraînez.<br><span class="grad">Timer compte pour&nbsp;vous.</span></h1>
+        <p class="lead">Tabata, HIIT, renforcement : créez vos intervalles en quelques secondes, enchaînez-les en séances, et laissez les bips rythmer votre effort, même par&#8209;dessus votre musique.</p>
+        <div class="stores">
+          <a class="store" href="https://apps.apple.com/fr/app/timer-tabata-hiit/id6761732194"><small>Télécharger dans</small><strong>l'App Store</strong></a>
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.hda.timer&amp;hl=fr"><small>Disponible sur</small><strong>Google Play</strong></a>
+        </div>
+        <ul class="chips"><li>Gratuit</li><li>Sans compte</li><li>13 langues</li></ul>
+      </div>
+      <div class="phones">
+        <div class="phone back"><img src="images/fr-accueil.jpg" width="720" height="1560" alt="Écran d'accueil de Timer : une séance et quatre entraînements, chacun avec sa durée totale." loading="lazy"></div>
+        <div class="phone front"><img src="images/fr-lecteur.jpg" width="720" height="1560" alt="Le lecteur de Timer en mode sombre : 27 secondes restantes sur le deuxième effort, avec les étapes suivantes en dessous." loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="wrap">
+      <h2>Tout ce qu'il faut, rien de trop</h2>
+      <p class="sub">Pensé pour s'entraîner, pas pour remplir des formulaires.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M4 12h16M4 18h7"/><circle cx="17" cy="6" r="2"/><circle cx="14" cy="18" r="2"/></svg></div>
+          <h3>Simple ou sur mesure</h3>
+          <p>Réglez échauffement, effort, repos, cycles et séries en deux touches. Ou construisez votre liste étape par étape, série par série.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9.5 2h5"/></svg></div>
+          <h3>En temps ou en répétitions</h3>
+          <p>40 secondes de burpees ou 15 pompes : un effort en répétitions attend que vous ayez fini, et une touche vous fait passer à la suite.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="5" rx="1.5"/><rect x="3" y="11" width="18" height="5" rx="1.5"/><path d="M8 20h8"/></svg></div>
+          <h3>Des séances complètes</h3>
+          <p>Enchaînez plusieurs entraînements (échauffement, HIIT, gainage) et lancez le tout d'un seul geste.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></div>
+          <h3>Pensé pour l'effort</h3>
+          <p>Grand chiffre lisible de loin, bips et vibrations à 3-2-1, écran qui reste allumé. Les bips se mêlent à votre musique, et le chrono reste juste même si le téléphone se verrouille.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div>
+          <h3>Votre historique</h3>
+          <p>Chaque entraînement terminé est gardé, avec le temps réellement joué et vos notes. De quoi voir vos progrès.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></div>
+          <h3>Partagez et sauvegardez</h3>
+          <p>Envoyez un entraînement à un ami ou à votre coach, sauvegardez tout dans un fichier, et retrouvez-le sur un nouveau téléphone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screens">
+    <div class="wrap">
+      <h2>L'app en images</h2>
+      <p class="sub">Des écrans clairs, faits pour être lus d'un coup d'œil.</p>
+      <div class="shots">
+        <figure class="shot"><div class="phone"><img src="images/fr-accueil.jpg" width="720" height="1560" alt="Écran d'accueil : une séance et quatre entraînements avec leur durée totale." loading="lazy"></div><figcaption>Vos entraînements d'un coup d'œil</figcaption></figure>
+        <figure class="shot"><div class="phone"><img src="images/fr-lecteur.jpg" width="720" height="1560" alt="Le lecteur : un grand compte à rebours, l'étape en cours en surbrillance, et un bouton pause." loading="lazy"></div><figcaption>Un lecteur lisible en plein effort</figcaption></figure>
+        <figure class="shot"><div class="phone"><img src="images/fr-historique.jpg" width="720" height="1560" alt="Historique : trois entraînements terminés, le premier ouvert avec son détail et une note." loading="lazy"></div><figcaption>Votre historique, avec vos notes</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="values">
+    <div class="wrap grid">
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+        <h3>Vos données restent chez vous</h3>
+        <p>Pas de compte, pas de serveur : vos entraînements restent sur votre téléphone. <a href="privacy-policy.html#fr">Politique de confidentialité</a></p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H8a2.5 2.5 0 1 1 0-5c3 0 4 5 4 5zM12 7h4a2.5 2.5 0 1 0 0-5c-3 0-4 5-4 5z"/></svg></div>
+        <h3>Gratuit</h3>
+        <p>L'app vit de la publicité. Là où la loi l'exige, votre accord est demandé d'abord.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+        <h3>Pour tout le monde</h3>
+        <p>13 langues, mode sombre, six couleurs au choix, et des libellés lus par VoiceOver et TalkBack.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Prêt pour votre prochaine séance&nbsp;?</h2>
+        <p>Téléchargez Timer gratuitement.</p>
+        <div class="stores">
+          <a class="store" href="https://apps.apple.com/fr/app/timer-tabata-hiit/id6761732194"><small>Télécharger dans</small><strong>l'App Store</strong></a>
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.hda.timer&amp;hl=fr"><small>Disponible sur</small><strong>Google Play</strong></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap foot">
+    <nav aria-label="Informations légales"><a href="support.html#fr">Support</a><a href="privacy-policy.html#fr">Confidentialité</a><a href="terms.html#fr">Conditions d'utilisation</a></nav>
+    <span>© 2026 Cool2Source, France</span>
+  </div>
+</footer>
+</div>
+
+<script>
+  // Une langue à la fois : celle que demande l'adresse (#en, #fr), sinon
+  // celle du téléphone. Le titre et la description suivent la langue.
+  (function () {
+    var meta = {
+      en: { title: 'Timer — Tabata & HIIT interval timer', description: 'Timer is a free Tabata and HIIT interval timer for iPhone and Android: simple or custom workouts, sessions, time or reps, beeps over your music, history. No account.' },
+      fr: { title: 'Timer — Minuteur Tabata & HIIT', description: "Timer est un minuteur d'intervalles Tabata et HIIT gratuit pour iPhone et Android : entraînements simples ou sur mesure, séances, temps ou répétitions, bips par-dessus votre musique, historique. Sans compte." }
+    };
+    var asked = location.hash.slice(1);
+    var lang = asked === 'en' || asked === 'fr' ? asked
+      : (navigator.language || 'en').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+    function show(which) {
+      document.documentElement.classList.add('js');
+      document.documentElement.lang = which;
+      document.title = meta[which].title;
+      document.querySelector('meta[name="description"]').setAttribute('content', meta[which].description);
+      ['en', 'fr'].forEach(function (id) {
+        document.getElementById(id).hidden = id !== which;
+        document.querySelector('.langs a[href="#' + id + '"]').setAttribute('aria-current', String(id === which));
+      });
+      window.scrollTo(0, 0);
+    }
+    show(lang);
+    // Le navigateur descend jusqu'au bloc demandé par #fr / #en : on revient en haut.
+    window.addEventListener('load', function () { window.scrollTo(0, 0); });
+    window.addEventListener('hashchange', function () {
+      var next = location.hash.slice(1);
+      if (next === 'en' || next === 'fr') show(next);
+    });
+  })();
+</script>
 </body>
 </html>
